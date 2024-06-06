@@ -4,6 +4,6 @@
 
 * Intros (20 min presentation)
 * Snowflake Tech Deep Dive (60 min presentation)
-* Hands-On Zero to Snowflake (~90 min) -- DRILL DOWN IN THIS GIT REPO
+* Hands-On [Zero to Snowflake](https://github.com/sfc-gh-mwies/sunlife-hol/tree/main/Day1/zero-to-snowflake) (~90 min)
 * Snowpark Python Deep Dive (30 min presentation)
-* Hands-On Intro to Data Engineering w. Snowpark Python (~90 min)
+* Hands-On [Data Engineering w. Snowpark Python](https://github.com/sfc-gh-mwies/sunlife-hol/tree/main/Day1/data-engineering-snowpark) (~90 min)
