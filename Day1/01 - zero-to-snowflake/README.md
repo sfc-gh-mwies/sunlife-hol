@@ -1,3 +1,4 @@
+![sunlife-snowflake](https://raw.githubusercontent.com/sfc-gh-mwies/sunlife-hol/main/img/sunlife-snowflake.png)
 # Getting Started with Snowflake - Zero to Snowflake
 
 ## 1. Overview
