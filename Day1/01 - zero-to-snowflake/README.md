@@ -1,7 +1,7 @@
 ![sunlife-snowflake](https://raw.githubusercontent.com/sfc-gh-mwies/sunlife-hol/main/img/sunlife-snowflake.png)
 # Getting Started with Snowflake - Zero to Snowflake
 
-## 1. Overview
+## Overview
 
 ### What You'll Learn:
 - How to create stages, databases, tables, views, and virtual warehouses.
@@ -20,7 +20,7 @@ This lab will use the following Cybersyn datasets:
 - SEC 10-K & 10-Q filings
 - Company metadata
 
-## 3. The Snowflake ​User Interface
+## The Snowflake ​User Interface
 
 >  **About the screenshots, sample code, and environment** Screenshots in this lab depict examples; results may vary slightly from what you see when you complete the exercises.
 
@@ -139,7 +139,7 @@ Clicking on your username in the bottom right of the UI allows you to change you
 System Roles like `SYSADMIN` and `ACCOUNTADMIN` have privileges to create warehouses, databases, users and other objects in an account and elevated privileges to manage the account itself.
 You can find additional information in the [Snowflake documentation](https://docs.snowflake.net/manuals/user-guide/security-access-control.html).
 
-## 4. Data Lab: Stock Price & SEC Filings Data
+## Data Lab: Stock Price & SEC Filings Data
 
 ### The Lab Story
 You work at a grocery retailer. You want to understand the performance of major consumer goods (CPG) companies in the US that supply your store. This lab takes a look at daily stock price data and quarterly and annual Securities Exchange Commission (SEC) company filings to understand the performance of the CPG landscape. Public companies are required to submit a quarterly and annual report to the SEC detailing their financial data.
@@ -150,7 +150,7 @@ We will start by collecting data from three different sources:
 3. Use the Snowflake Marketplace to find free stock price data from Cybersyn.
 
 
-## 5. Loading Structured Data into Snowflake: CSVs
+## 1. Loading Structured Data into Snowflake: CSVs
 
 Let's start by preparing to load structured `.csv` data into Snowflake.
 
@@ -322,193 +322,7 @@ Next, navigate to the **Query History** tab by clicking the **Home** icon and th
 ![history and duration](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/5Load_6.png?raw=true)
 
 
-## 5. Loading Structured Data into Snowflake: CSVs
-
-Let's start by preparing to load structured `.csv` data into Snowflake.
-
-We are using company metadata developed from the Securities and Exchange Commission (SEC) that details the consumer packaged goods (CPG) companies we want to evaluate. The data has been exported and pre-staged for you in an Amazon AWS S3 bucket in the US-EAST region. It is in comma-delimited format with a single header line and double quotes enclosing all string values, including the field headings in the header line. This will be important when we configure the Snowflake table to store this data.
-
-**Getting Data into Snowflake**
-Data can be ingested into Snowflake from many locations by using the `COPY` command, Snowpipe auto-ingestion, external connectors, or third-party ETL/ELT solutions. For more information on getting data into Snowflake, see the [Snowflake documentation](https://docs.snowflake.net/manuals/user-guide-data-load.html). For the purposes of this lab, we use the `COPY` command and AWS S3 storage to load data manually. In a real-world scenario, you would more likely use an ETL solution or grab data directly from the Snowflake Marketplace!
-
-### Create a Database and Table
-Ensure you are using the `SNOWPARK_HOL_ROLE` role by selecting your name at the top left, **Switch Role** > **SNOWPARK_HOL_ROLE**.
-
-Navigate to the **Databases** tab. Click **Create**, name the database `<firstname>_<lastname>_CYBERSYN`, then click **CREATE**.
-
-![worksheet creation](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_2.png?raw=true)
-
-Now navigate to the **Worksheets** tab. You should see the worksheet we created in step 3.
-
-![new worksheet](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_3.png?raw=true)
-
-We need to set the context appropriately within the worksheet. In the upper right corner of the worksheet, click the box to the left of the **Share** button to show the context menu. Here we control the elements you can see and run from each worksheet. We are using the UI here to set the context. Later in the lab, we will accomplish the same thing via SQL commands within the worksheet.
-
-Select the following context settings:
-
-**Role:** `SNOWPARK_HOL_ROLE`
-**Warehouse:** `SNOWPARK_HOL_VWH`
-
-![context role and warehouse settings](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_4.png?raw=true)
-
-Next, in the drop-down for the database, select the following context settings:
-
-**Database:** `<firstname>_<lastname>_CYBERSYN`
-**Schema:** `PUBLIC`
-
-![context database settings](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_4b.png?raw=true)
-
->  **Data Definition Language (DDL) operations are free!**
-All the DDL operations we have done so far do not require compute resources, so we can create all our objects for free.
-
-To make working in the worksheet easier, let's rename it. In the top left corner, double-click the worksheet name, which is the timestamp when the worksheet was created, and change it to `ZERO_TO_SNOWFLAKE_WITH_CYBERSYN`.
-
-Next we create a table called `COMPANY_METADATA` to use for loading the comma-delimited data. Instead of using the UI, we use the worksheet to run the DDL that creates the table. Copy the following SQL text into your worksheet:
-
-```SQL
-CREATE OR REPLACE TABLE company_metadata
-(cybersyn_company_id string,
-company_name string,
-permid_security_id string,
-primary_ticker string,
-security_name string,
-asset_class string,
-primary_exchange_code string,
-primary_exchange_name string,
-security_status string,
-global_tickers variant,
-exchange_code variant,
-permid_quote_id variant);
-```
-
-
->  **Many Options to Run Commands.**
-SQL commands can be executed through the UI, via the **Worksheets** tab, using our SnowSQL command line tool, with a SQL editor of your choice via ODBC/JDBC, or through our other connectors (Python, Spark, etc.).
-As mentioned earlier, to save time, we are performing most of the operations in this lab via pre-written SQL executed in the worksheet as opposed to using the UI.
-
-Run the query by placing your cursor anywhere in the SQL text and clicking the blue **Play/Run** button in the top right of the worksheet. Or use the keyboard shortcut [Ctrl]/[Cmd]+[Enter].
-
-Verify your `COMPANY_METADATA` table has been created. At the bottom of the worksheet, you should see a Results section displaying a `"Table COMPANY_METADATA successfully created"` message.
-
-![TRIPS confirmation message](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_5.png?raw=true)
-
-Navigate to the **Databases** tab by clicking the **HOME** icon in the upper left corner of the worksheet. Then click **Data** > **Databases**. In the list of databases, click `<firstname>_<lastname>_CYBERSYN` > `PUBLIC` > **TABLES** to see your newly created `COMPANY_METADATA` table. If you don't see any databases on the left, expand your browser because they may be hidden.
-
-![TRIPS table](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_6.png?raw=true)
-
-Click `COMPANY_METADATA` and the **Columns** tab to see the table structure you just created.
-
-![TRIPS table structure](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_7.png?raw=true)
-
-### Create an External Stage
-
-We are working with structured, comma-delimited data that has already been staged in a public, external S3 bucket. Before we can use this data, we first need to create a _stage_ that specifies the location of our external bucket.
-
->  For this lab, we are using an AWS-East bucket. To prevent data egress/transfer costs in the future, you should select a staging location from the same cloud provider and region as your Snowflake account.
-
-From the **Databases** tab, click the `<firstname>_<lastname>_CYBERSYN` database and `PUBLIC` schema. Click the **Create** button, then **Stage** > **Amazon S3**.
-
-![stages create](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_8.png?raw=true)
-
-In the `Create Securable Object` dialog that opens, replace the following values in the SQL statement:
-
-**Stage Name**: `cybersyn_company_metadata`
-**URL**: `s3://sfquickstarts/zero_to_snowflake/cybersyn-consumer-company-metadata-csv/cybersyn_consumer_company_metadata.csv`
-
-**Note:** Make sure to include the final forward slash (`/`) at the end of the URL or you will encounter errors later when loading data from the bucket.
-Also ensure you have removed 'credentials = (...)' statement which is not required. You can also comment it out like the picture below by using '--'. The create stage command should resemble the below picture or not include the 3rd line.
-
->  The S3 bucket for this lab is public so you can leave the credentials options in the statement empty. In a real-world scenario, the bucket used for an external stage would likely require key information.
-
-![create stage settings](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_9.png?raw=true)
-
-Now let's take a look at the contents of the `cybersyn_company_metadata` stage. Navigate back to the **Worksheets** tab and open the `ZERO_TO_SNOWFLAKE_WITH_CYBERSYN` worksheet we made.
-
-Add the following SQL statement below the previous code and then execute:
-
-```SQL
-LIST @cybersyn_company_metadata;
-```
-
-In the results in the bottom pane, you should see the list of files in the stage:
-
-![worksheet result](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_10.png?raw=true)
-
-### Create a File Format
-
-Before we can load the data into Snowflake, we have to create a file format that matches the data structure. In the worksheet, again add the following command below the rest and execute to create the file format:
-
-```SQL
-CREATE OR REPLACE FILE FORMAT csv
-    TYPE = 'CSV'
-    COMPRESSION = 'AUTO'  -- Automatically determines the compression of files
-    FIELD_DELIMITER = ','  -- Specifies comma as the field delimiter
-    RECORD_DELIMITER = '\n'  -- Specifies newline as the record delimiter
-    SKIP_HEADER = 0  -- No headers to skip, starts reading from the first line
-    FIELD_OPTIONALLY_ENCLOSED_BY = '\042'  -- Fields are optionally enclosed by double quotes (ASCII code 34)
-    TRIM_SPACE = FALSE  -- Spaces are not trimmed from fields
-    ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE  -- Does not raise an error if the number of fields in the data file varies
-    ESCAPE = 'NONE'  -- No escape character for special character escaping
-    ESCAPE_UNENCLOSED_FIELD = '\134'  -- Backslash is the escape character for unenclosed fields
-    DATE_FORMAT = 'AUTO'  -- Automatically detects the date format
-    TIMESTAMP_FORMAT = 'AUTO'  -- Automatically detects the timestamp format
-    NULL_IF = ('')  -- Treats empty strings as NULL values
-    COMMENT = 'File format for ingesting data for zero to snowflake';
-```
-
-![create file format](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_11.png?raw=true)
-
-Verify the file format has been created with the correct settings by executing the following command:
-
-```SQL
-SHOW FILE FORMATS IN DATABASE cybersyn;
-```
-
-The file format created should be listed in the result:
-![create file format settings](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_12.png?raw=true)
-
-
-### Load the Data
-
-Now we can run a COPY command to load the data into the `COMPANY_METADATA` table we created earlier.
-
-Navigate back to the `ZERO_TO_SNOWFLAKE_WITH_CYBERSYN` worksheet in the **Worksheets** tab. Make sure the worksheet context is correctly set:
-
-**Role:** `SNOWPARK_HOL_ROLE`
-**Warehouse:** `SNOWPARK_HOL_VWH`
-**Database:** `<firstname>_<lastname>_CYBERSYN`
-**Schema:** `PUBLIC`
-
-![worksheet context](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/5Load_4.png?raw=true)
-
-Execute the following statements in the worksheet to load the staged data into the table. This may take up to 30 seconds.
-
-```SQL
-COPY INTO company_metadata FROM @cybersyn_company_metadata file_format=csv PATTERN = '.*csv.*' ON_ERROR = 'CONTINUE';
-```
-
-In the result pane, you should see the status of each file that was loaded. Once the load is done, in the **Query Details** pane on the bottom right, you can scroll through the various statuses, error statistics, and visualizations for the last statement executed.
-
-Next, navigate to the **Query History** tab by clicking the **Home** icon and then **Activity** > **Query History**. Select the query at the top of the list, which should be the COPY INTO statement that was last executed. Select the **Query Profile** tab and note the steps taken by the query to execute, query details, most expensive nodes, and additional statistics.
-
-![history and duration](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/5Load_6.png?raw=true)
-
-
-### Create a New Warehouse for Data Analytics
-
-Let's assume our internal analytics team wants to eliminate resource contention between their data loading/ETL workloads and the analytical end users using BI tools to query Snowflake. As mentioned earlier, Snowflake can easily do this by assigning different, appropriately-sized warehouses to various workloads. Since our company already has a warehouse for data loading, let's create a new warehouse for the end users running analytics. 
-
-Navigate to the **Admin** > **Warehouses** tab, click **+ Warehouse**, and name the new warehouse and set the size to `X-Small`.
-
-If you are using Snowflake Enterprise Edition (or higher) and **Multi-cluster Warehouses** is enabled, you will see additional settings:
-- Make sure **Max Clusters** is set to `1`.
-- Leave all the other settings at their defaults.
-
-![warehouse settings](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/5Load_10.png?raw=true)
-
-Click the **Create Warehouse** button to create the warehouse.
-
-## Loading Semi-Structured Data into Snowflake: JSONs
+## 2.Loading Semi-Structured Data into Snowflake: JSONs
 
 >  This section requires loading additional data and, therefore, provides a review of data loading while also introducing loading semi-structured data.
 
@@ -654,153 +468,7 @@ FROM sec_filings_index_view
 LIMIT 20;
 ```
 
-## Loading Semi-Structured Data into Snowflake: JSONs
-
->  This section requires loading additional data and, therefore, provides a review of data loading while also introducing loading semi-structured data.
-
-Going back to the lab's example, our company's analytics team wants to evaluate the performance of CPG companies through the lens of their reported metrics in SEC filings. To do this, in this section, we will:
-
-- Load SEC filing data in semi-structured JSON format held in a public S3 bucket.
-- Create a view and query the JSON data using SQL dot notation.
-
-The JSON data consists of SEC filings provided by *Cybersyn*, detailing the historical performance of consumer-packaged goods companies from 2019-2023. It is also staged on AWS S3. If viewed in a text editor, the raw JSON in the GZ files looks like:
-
-![raw JSON sample](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/7SemiStruct_1_1.png?raw=true)
-
-_(The full dataset available [**for free**](https://app.snowflake.com/marketplace/listing/GZTSZAS2KH9/) in Snowflake Marketplace from Cybersyn -- no ETL required. For the purposes of this demo, we will focus on working with the semi-structured JSON file to learn how to load structured data into Snowflake.)_
-
->  **SEMI-STRUCTURED DATA**
-Snowflake can easily load and query semi-structured data such as JSON, Parquet, or Avro without transformation. This is a key Snowflake feature because an increasing amount of business-relevant data being generated today is semi-structured, and many traditional data warehouses cannot easily load and query such data. Snowflake makes it easy!
-
-### Create a New Database and Table for the Data
-
->  **Executing Multiple Commands** Remember that you need to execute each command individually. However, you can execute them in sequence together by selecting all of the commands and then clicking the **Play/Run** button (or using the keyboard shortcut).
-
-Next, let's create two tables, `SEC_FILINGS_INDEX` and `SEC_FILINGS_ATTRIBUTES` to use for loading JSON data. In the worksheet, execute the following `CREATE TABLE` commands:
-
-```SQL
-CREATE TABLE sec_filings_index (v variant);
-
-CREATE TABLE sec_filings_attributes (v variant);
-```
-
-Note that Snowflake has a special data type called `VARIANT` that allows storing the entire JSON object as a single row and querying the object directly.
-
->  **Semi-Structured Data Magic**
-The `VARIANT` data type allows Snowflake to ingest semi-structured data without having to predefine the schema.
-
-In the results pane at the bottom of the worksheet, verify that your tables, `SEC_FILINGS_INDEX` and `SEC_FILINGS_ATTRIBUTES`, were created:
-
-![success message](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/7SemiStruct_2_1.png?raw=true)
-
-### Create Another External Stage
-
-In the `ZERO_TO_SNOWFLAKE_WITH_CYBERSYN` worksheet, use the following command to create a stage that points to the bucket where the semi-structured JSON data is stored on AWS S3:
-
-```SQL
-CREATE STAGE cybersyn_sec_filings
-url = 's3://sfquickstarts/zero_to_snowflake/cybersyn_cpg_sec_filings/';
-```
-
-Now let's take a look at the contents of the `cybersyn_sec_filings` stage. Execute the following `LIST` command to display the list of files:
-
-```SQL
-LIST @cybersyn_sec_filings;
-```
-
-In the results pane, you should see a list of `.gz` files from S3:
-![results output](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/7SemiStruct_3_1.png?raw=true)
-
-### Load and Verify the Semi-structured Data
-
-We will now use a warehouse to load the data from an S3 bucket into the tables we created earlier. In the `ZERO_TO_SNOWFLAKE_WITH_CYBERSYN` worksheet, execute the `COPY` command below to load the data.
-
-Note that you can specify a `FILE FORMAT` object inline in the command. In the previous section where we loaded structured data in CSV format, we had to define a file format to support the CSV structure. Because the JSON data here is well-formed, we are able to simply specify the JSON type and use all the default settings:
-
-```SQL
-COPY INTO sec_filings_index
-FROM @cybersyn_sec_filings/cybersyn_sec_report_index.json.gz
-    file_format = (type = json strip_outer_array = true);
-
-COPY INTO sec_filings_attributes
-FROM @cybersyn_sec_filings/cybersyn_sec_report_attributes.json.gz
-    file_format = (type = json strip_outer_array = true);
-```
-
-Verify that each file has a status of `LOADED`:
-![query result](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/7SemiStruct_4_1.png?raw=true)
-
-Now, let's take a look at the data that was loaded:
-```SQL
-SELECT * FROM sec_filings_index LIMIT 10;
-SELECT * FROM sec_filings_attributes LIMIT 10;
-```
-
-Click any of the rows to display the formatted JSON in the right panel:
-
-![JSON data snippet](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/7SemiStruct_5_1.png?raw=true)
-
-To close the display in the panel and display the query details again, click the **X** (Close) button that appears when you hover your mouse in the right corner of the panel.
-
-### Create a View and Query Semi-Structured Data
-
-Next, let's look at how Snowflake allows us to create a view and also query the JSON data directly using SQL.
-
->  **Views & Materialized Views**
-A view allows the result of a query to be accessed as if it were a table. Views can help present data to end users in a cleaner manner, limit what end users can view in a source table, and write more modular SQL.
-
-Snowflake also supports materialized views in which the query results are stored as though the results are a table. This allows faster access, but requires storage space. Materialized views can be created and queried if you are using Snowflake Enterprise Edition (or higher).
-
-Run the following command to create a columnar view of the semi-structured JSON SEC filing data, so it is easier for analysts to understand and query. The CIK corresponds to the Central Index Key, or unique identifier that SEC gives to each filing entity. The ADSH is the document number for any filing submitted to the SEC.
-
-```SQL
-CREATE OR REPLACE VIEW sec_filings_index_view AS
-SELECT
-    v:CIK::string                   AS cik,
-    v:COMPANY_NAME::string          AS company_name,
-    v:EIN::int                      AS ein,
-    v:ADSH::string                  AS adsh,
-    v:TIMESTAMP_ACCEPTED::timestamp AS timestamp_accepted,
-    v:FILED_DATE::date              AS filed_date,
-    v:FORM_TYPE::string             AS form_type,
-    v:FISCAL_PERIOD::string         AS fiscal_period,
-    v:FISCAL_YEAR::string           AS fiscal_year
-FROM sec_filings_index;
-
-CREATE OR REPLACE VIEW sec_filings_attributes_view AS
-SELECT
-    v:VARIABLE::string            AS variable,
-    v:CIK::string                 AS cik,
-    v:ADSH::string                AS adsh,
-    v:MEASURE_DESCRIPTION::string AS measure_description,
-    v:TAG::string                 AS tag,
-    v:TAG_VERSION::string         AS tag_version,
-    v:UNIT_OF_MEASURE::string     AS unit_of_measure,
-    v:VALUE::string               AS value,
-    v:REPORT::int                 AS report,
-    v:STATEMENT::string           AS statement,
-    v:PERIOD_START_DATE::date     AS period_start_date,
-    v:PERIOD_END_DATE::date       AS period_end_date,
-    v:COVERED_QTRS::int           AS covered_qtrs,
-    TRY_PARSE_JSON(v:METADATA)    AS metadata
-FROM sec_filings_attributes;
-```
-
-SQL dot notation `v:VARIABLE` is used in this command to pull out values at lower levels within the JSON object hierarchy. This allows us to treat each field as if it were a column in a relational table.
-
-The new view should appear as `SEC_FILINGS_INDEX_VIEW` under `<firstname>_<lastname>_CYBERSYN` > `PUBLIC` > **Views** in the object browser on the left. You may need to expand or refresh the objects browser in order to see it.
-
-![JSON_WEATHER_DATA _VIEW in dropdown](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/7SemiStruct_6_1.png?raw=true)
-
-Notice the results look just like a regular structured data source: 
-
-```SQL
-SELECT *
-FROM sec_filings_index_view
-LIMIT 20;
-```
-
-## Getting Data from Snowflake Marketplace
+## 3. Getting Data from Snowflake Marketplace
 
 ### Snowflake Data Marketplace
 
@@ -836,7 +504,7 @@ Next:
 
 That's it! You have now successfully subscribed to the Financial & Economic Essentials datasets from Cybersyn, which are updated daily with global financial data. Notice we didn't have to create databases, tables, views, or an ETL process. We simply searched for and accessed shared data from the Snowflake Data Marketplace.
 
-## 8. Querying, the Results Cache, & Cloning
+## 4. Querying, the Results Cache, & Cloning
 
 In the previous exercises, we loaded data into two tables using Snowflake's `COPY` bulk loader command and the `SNOWPARK_HOL_VWH` virtual warehouse. Typically, we would now take on a different role for the analytics users at our company who need to query data in those tables using the worksheet and a second warehouse. This allows each group to work independently without "noisy neighbors" hogging their compute power.
 
@@ -993,7 +661,7 @@ ORDER BY product, period_end_date;
 ```
 ![weather results](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/7SemiStruct_8_1.png?raw=true)
 
-## Using Time Travel
+## 5. Using Time Travel
 
 Snowflake's powerful Time Travel feature enables accessing historical data, as well as the objects storing the data, at any point within a period of time. The default window is 24 hours and, if you are using Snowflake Enterprise Edition, can be increased up to 90 days. Most data warehouses cannot offer this functionality, but - you guessed it - Snowflake makes it easy!
 
