@@ -9,7 +9,6 @@
 - How to perform analytical queries on data in Snowflake, including joins between tables.
 - How to clone objects.
 - How to undo user errors using Time Travel.
-- How to create roles and users, and grant them privileges.
 - How to securely and easily share data with other accounts.
 
 ### Data You'll Use:
@@ -63,8 +62,6 @@ The bottom pane displays the results of queries and other operations. Also inclu
 
 The various panes on this page can be resized by adjusting their sliders. If you need more room in the worksheet, collapse the database objects browser in the left panel. Many of the screenshots in this guide keep this panel closed.
 
-> aside negative
-> 
 >  **Worksheets vs the UI**
 Most of the exercises in this lab are executed using pre-written SQL within this worksheet to save time. These tasks can also be done via the UI, but would require navigating back-and-forth between multiple UI tabs.
 
@@ -104,6 +101,9 @@ Under **Monitoring** there are multiple tabs for tracking your usage of your Sno
 
 ![history tab](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/3UIStory_9.png?raw=true)
 
+---
+> **NOTE:** THE ADMIN TAB WILL NOT BE VISIBLE TO NON-ADMIN USERS
+
 ### Admin > Warehouses
 
 Under **Admin**, the **​Warehouses​** tab is where you set up and manage compute resources known as virtual warehouses to load or query data in Snowflake. A warehouse called COMPUTE_WH already exists in your environment.
@@ -128,14 +128,15 @@ The **Users** sub-tab of the **Users & Roles** tab shows a list of users in the 
 
 ![users tab](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/3UIStory_13.png?raw=true)
 
-Clicking on your username in the bottom right of the UI allows you to change your password, roles, and preferences. Snowflake has several system defined roles. You are currently in the default role of `SYSADMIN` and will stay in this role for the majority of the lab.
+---
+
+Clicking on your username in the bottom right of the UI allows you to change your password, roles, and preferences. Snowflake has several system defined roles. You are currently in the default role of `SNOWPARK_HOL_ROLE` and will stay in this role for the majority of the lab.
 
 ![user preferences dropdown](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/3UIStory_14.png?raw=true)
-
  
 >  **SYSADMIN**
-The `SYSADMIN` (aka System Administrator) role has privileges to create warehouses, databases, and other objects in an account.
-In a real-world environment, you would use different roles for the tasks in this lab, and assign roles to your users. We will cover more on roles and Snowflake's access control model in Section 9 and you can find additional information in the [Snowflake documentation](https://docs.snowflake.net/manuals/user-guide/security-access-control.html).
+System Roles like `SYSADMIN` and `ACCOUNTADMIN` have privileges to create warehouses, databases, users and other objects in an account and elevated privileges to manage the account itself.
+You can find additional information in the [Snowflake documentation](https://docs.snowflake.net/manuals/user-guide/security-access-control.html).
 
 ## 4. Data Lab: Stock Price & SEC Filings Data
 
@@ -300,7 +301,7 @@ Now we can run a COPY command to load the data into the `COMPANY_METADATA` table
 
 Navigate back to the `ZERO_TO_SNOWFLAKE_WITH_CYBERSYN` worksheet in the **Worksheets** tab. Make sure the worksheet context is correctly set:
 
-**Role:** `SYSADMIN`
+**Role:** `SNOWPARK_HOL_ROLE`
 **Warehouse:** `SNOWPARK_HOL_VWH`
 **Database:** `<firstname>_<lastname>_CYBERSYN`
 **Schema:** `PUBLIC`
@@ -318,21 +319,6 @@ In the result pane, you should see the status of each file that was loaded. Once
 Next, navigate to the **Query History** tab by clicking the **Home** icon and then **Activity** > **Query History**. Select the query at the top of the list, which should be the COPY INTO statement that was last executed. Select the **Query Profile** tab and note the steps taken by the query to execute, query details, most expensive nodes, and additional statistics.
 
 ![history and duration](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/5Load_6.png?raw=true)
-
-
-### Create a New Warehouse for Data Analytics
-
-Let's assume our internal analytics team wants to eliminate resource contention between their data loading/ETL workloads and the analytical end users using BI tools to query Snowflake. As mentioned earlier, Snowflake can easily do this by assigning different, appropriately-sized warehouses to various workloads. Since our company already has a warehouse for data loading, let's create a new warehouse for the end users running analytics. 
-
-Navigate to the **Admin** > **Warehouses** tab, click **+ Warehouse**, and name the new warehouse and set the size to `X-Small`.
-
-If you are using Snowflake Enterprise Edition (or higher) and **Multi-cluster Warehouses** is enabled, you will see additional settings:
-- Make sure **Max Clusters** is set to `1`.
-- Leave all the other settings at their defaults.
-
-![warehouse settings](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/5Load_10.png?raw=true)
-
-Click the **Create Warehouse** button to create the warehouse.
 
 
 ## 5. Loading Structured Data into Snowflake: CSVs
@@ -487,7 +473,7 @@ Now we can run a COPY command to load the data into the `COMPANY_METADATA` table
 
 Navigate back to the `ZERO_TO_SNOWFLAKE_WITH_CYBERSYN` worksheet in the **Worksheets** tab. Make sure the worksheet context is correctly set:
 
-**Role:** `SYSADMIN`
+**Role:** `SNOWPARK_HOL_ROLE`
 **Warehouse:** `SNOWPARK_HOL_VWH`
 **Database:** `<firstname>_<lastname>_CYBERSYN`
 **Schema:** `PUBLIC`
@@ -655,7 +641,7 @@ FROM sec_filings_attributes;
 
 SQL dot notation `v:VARIABLE` is used in this command to pull out values at lower levels within the JSON object hierarchy. This allows us to treat each field as if it were a column in a relational table.
 
-The new view should appear as `SEC_FILINGS_INDEX_VIEW` under `CYBERSYN` > `PUBLIC` > **Views** in the object browser on the left. You may need to expand or refresh the objects browser in order to see it.
+The new view should appear as `SEC_FILINGS_INDEX_VIEW` under `<firstname>_<lastname>_CYBERSYN` > `PUBLIC` > **Views** in the object browser on the left. You may need to expand or refresh the objects browser in order to see it.
 
 ![JSON_WEATHER_DATA _VIEW in dropdown](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/7SemiStruct_6_1.png?raw=true)
 
@@ -801,7 +787,7 @@ FROM sec_filings_attributes;
 
 SQL dot notation `v:VARIABLE` is used in this command to pull out values at lower levels within the JSON object hierarchy. This allows us to treat each field as if it were a column in a relational table.
 
-The new view should appear as `SEC_FILINGS_INDEX_VIEW` under `CYBERSYN` > `PUBLIC` > **Views** in the object browser on the left. You may need to expand or refresh the objects browser in order to see it.
+The new view should appear as `SEC_FILINGS_INDEX_VIEW` under `<firstname>_<lastname>_CYBERSYN` > `PUBLIC` > **Views** in the object browser on the left. You may need to expand or refresh the objects browser in order to see it.
 
 ![JSON_WEATHER_DATA _VIEW in dropdown](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/7SemiStruct_6_1.png?raw=true)
 
@@ -851,18 +837,18 @@ That's it! You have now successfully subscribed to the Financial & Economic Esse
 
 ## 8. Querying, the Results Cache, & Cloning
 
-In the previous exercises, we loaded data into two tables using Snowflake's `COPY` bulk loader command and the `COMPUTE_WH` virtual warehouse. Now we are going to take on the role of the analytics users at our company who need to query data in those tables using the worksheet and the second warehouse `ANALYTICS_WH`.
+In the previous exercises, we loaded data into two tables using Snowflake's `COPY` bulk loader command and the `SNOWPARK_HOL_VWH` virtual warehouse. Typically, we would now take on a different role for the analytics users at our company who need to query data in those tables using the worksheet and a second warehouse. This allows each group to work independently without "noisy neighbors" hogging their compute power.
 
 >  **Real World Roles and Querying**
-Within a real company, analytics users would likely have a different role than `SNOWPARK_HOL_USER`. To keep the lab simple, we are going to stay with the `SNOWPARK_HOL_USER` role for this section. Additionally, querying would typically be done with a business intelligence product like Tableau, Looker, PowerBI, etc. For more advanced analytics, data science tools like Datarobot, Dataiku, AWS Sagemaker or many others can query Snowflake. Any technology that leverages JDBC/ODBC, Spark, Python, or any of the other supported programmatic interfaces can run analytics on the data in Snowflake. To keep this lab simple, all queries are being executed via the Snowflake worksheet.
+Within a real company, analytics users would likely have a different role than `SNOWPARK_HOL_ROLE`. To keep the lab simple, we are going to stay with the `SNOWPARK_HOL_ROLE` role for this section. Additionally, querying would typically be done with a business intelligence product like Tableau, Looker, PowerBI, etc. For more advanced analytics, data science tools like Datarobot, Dataiku, AWS Sagemaker or many others can query Snowflake. Any technology that leverages JDBC/ODBC, Spark, Python, or any of the other supported programmatic interfaces can run analytics on the data in Snowflake. To keep this lab simple, all queries are being executed via the Snowflake worksheet.
 
 ### Execute Some Queries
 
 Go to the **ZERO_TO_SNOWFLAKE_WITH_CYBERSYN** worksheet and be sure to use the HOL warehouse. Your worksheet context should be the following:
 
-**Role:** `SNOWPARK_HOL_USER`
+**Role:** `SNOWPARK_HOL_ROLE`
 **Warehouse:** `SNOWPARK_HOL_VWH`
-**Database:** `CYBERSYN`
+**Database:** `CYBERSYN_<firstname_lastname>`
 **Schema:** `PUBLIC`
 
 ![sample data query results](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/6Query_1.png?raw=true)
@@ -952,7 +938,7 @@ Run the following command in the worksheet to create a development (dev) table c
 CREATE TABLE company_metadata_dev CLONE company_metadata;
 ```
 
-Click the three dots (**...**) in the left pane and select **Refresh**. Expand the object tree under the `CYBERSYN` database and verify that you see a new table named `company_metadata_dev`. Your Development team now can do whatever they want with this table, including updating or deleting it, without impacting the `company_metadata` table or any other object.
+Click the three dots (**...**) in the left pane and select **Refresh**. Expand the object tree under the `<firstname>_<lastname>_CYBERSYN` database and verify that you see a new table named `company_metadata_dev`. Your Development team now can do whatever they want with this table, including updating or deleting it, without impacting the `company_metadata` table or any other object.
 
 ![trips_dev table](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/6Query_6.png?raw=true)
 
@@ -1047,16 +1033,16 @@ SELECT * FROM sec_filings_index LIMIT 10;
 
 ### Roll Back a Table
 
-Let's roll back the `COMPANY_METADATA` table in the `CYBERSYN` database to a previous state to fix an unintentional DML error that replaces all the company names in the table with the word "oops".
+Let's roll back the `COMPANY_METADATA` table in the `<firstname>_<lastname>_CYBERSYN` database to a previous state to fix an unintentional DML error that replaces all the company names in the table with the word "oops".
 
 First, run the following SQL statements to switch your worksheet to the proper context:
 
 ```SQL
-USE ROLE sysadmin;
+USE ROLE SNOWPARK_HOL_ROLE;
 
-USE WAREHOUSE compute_wh;
+USE WAREHOUSE SNOWPARK_HOL_VWH;
 
-USE DATABASE cybersyn;
+USE DATABASE <firstname>_<lastname>_CYBERSYN;
 
 USE SCHEMA public;
 ```
