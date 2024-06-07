@@ -1,4 +1,5 @@
-# Sunlife HOL Day 1 - Fundamentals + Data Engineering
+![sunlife-snowflake](https://github.com/sfc-gh-mwies/sunlife-hol/blob/main/img/sunlife-snowflake.png?raw=true)
+> # Sunlife HOL Day 1 - Fundamentals + Data Engineering
 
 ## AGENDA
 
