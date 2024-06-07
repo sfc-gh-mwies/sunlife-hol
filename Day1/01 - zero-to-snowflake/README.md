@@ -328,7 +328,7 @@ _(The full dataset available [**for free**](https://app.snowflake.com/marketplac
 >  **SEMI-STRUCTURED DATA**
 Snowflake can easily load and query semi-structured data such as JSON, Parquet, or Avro without transformation. This is a key Snowflake feature because an increasing amount of business-relevant data being generated today is semi-structured, and many traditional data warehouses cannot easily load and query such data. Snowflake makes it easy!
 
-### Create a New Database and Table for the Data
+### Create a New Table for the Data
 
 >  **Executing Multiple Commands** Remember that you need to execute each command individually. However, you can execute them in sequence together by selecting all of the commands and then clicking the **Play/Run** button (or using the keyboard shortcut).
 
@@ -549,7 +549,7 @@ SELECT
     ts.date,
     ts.value AS nasdaq_volume,
     (ts.value / LAG(ts.value, 1) OVER (PARTITION BY meta.primary_ticker ORDER BY ts.date) - 1)::DOUBLE AS volume_change
-FROM cybersyn.stock_price_timeseries ts
+FROM Financial__Economic_Essentials.cybersyn.stock_price_timeseries ts
 INNER JOIN company_metadata meta
 ON ts.ticker = meta.primary_ticker
 WHERE ts.variable_name = 'Nasdaq Volume';
@@ -616,7 +616,7 @@ WITH data_prep AS (
         att.period_end_date,
         att.covered_qtrs,
         TRIM(att.metadata:"ProductOrService"::STRING) AS product
-    FROM sec_filings_attributes_view att
+    FROM Financial__Economic_Essentials.cybersyn.sec_filings_attributes_view att
     JOIN sec_filings_index_view idx
         ON idx.cik = att.cik AND idx.adsh = att.adsh
     WHERE idx.cik = '0001637459'
