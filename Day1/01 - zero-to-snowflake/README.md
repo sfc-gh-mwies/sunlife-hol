@@ -22,7 +22,7 @@ This lab will use the following Cybersyn datasets:
 
 ## The Snowflake ​User Interface
 
->  **About the screenshots, sample code, and environment** Screenshots in this lab depict examples; results may vary slightly from what you see when you complete the exercises.
+>  **About the screenshots, sample code, and environment:** Screenshots in this lab depict examples; results may vary slightly from what you see when you complete the exercises.
 
 ### Navigating the Snowflake UI
 
@@ -32,7 +32,9 @@ Let's get you acquainted with Snowflake! This section covers the basic component
 
 ### Projects > Worksheets
 
-Under **Projects** on the left-hand panel, select the ​**Worksheets​** tab. This provides an interface for submitting SQL queries, performing DDL and DML operations, and viewing results as your queries or operations complete. A new worksheet is created by clicking **`+`** on the top right.
+**Let's Get Logged in!** -- Navigate to your hands-on lab web UI and log in using the username and password provided.
+
+Under **Projects** on the left-hand panel, select the ​**Worksheets​** tab. Create a new worksheet by clicking **`+`** on the top right.
 
 ![worksheets tab main](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/3UIStory_3.png?raw=true)
 
@@ -42,29 +44,14 @@ Under **Projects** on the left-hand panel, select the ​**Worksheets​** tab. 
 
 The top left corner contains the following:
 - **Snowflake** icon: Use this to get back to the main console/close the worksheet.
-- **Worksheet_name** drop-down: The default name is the timestamp when the worksheet was created. Click the timestamp to edit the worksheet name. The drop-down also displays additional actions you can perform for the worksheet.
+- **Worksheet_name** drop-down: Click the timestamp to edit the worksheet name.
 - **Filters** button: Custom filters are special keywords that resolve as a subquery or list of values.
 
 The top right corner contains the following:
 - **Context** box: This lets Snowflake know which role and warehouse to use during this session. It can be changed via the UI or SQL commands.
 - **Share** button: Open the sharing menu to share to other users or copy the link to the worksheet.
-- **Play/Run** button: Run the SQL statement where the cursor currently is or multiple selected statements.
-
-The middle pane contains the following:
-- Drop-down at the top for setting the database/schema/object context for the worksheet.
-- General working area where you enter and execute queries and other SQL statements. 
-
-The middle-left panel contains the following:
-- **Worksheets** tab: Use this tab to quickly select and jump between different worksheets
-- **Databases** tab: Use this tab to view all of the database objects available to the current role
-- **Search** bar: database objects browser which enables you to explore all databases, schemas, tables, and views accessible by the role currently in use for the worksheet. 
 
 The bottom pane displays the results of queries and other operations. Also includes 4 options (**Object**, **Query**, **Result**, **Chart**) that open/close their respective panels on the UI. **Chart** opens a visualization panel for the returned results. More on this later.
-
-The various panes on this page can be resized by adjusting their sliders. If you need more room in the worksheet, collapse the database objects browser in the left panel. Many of the screenshots in this guide keep this panel closed.
-
->  **Worksheets vs the UI**
-Most of the exercises in this lab are executed using pre-written SQL within this worksheet to save time. These tasks can also be done via the UI, but would require navigating back-and-forth between multiple UI tabs.
 
 ### Projects > Dashboards
 
@@ -74,7 +61,7 @@ Under **Projects** on the left-hand panel, select the ​**Dashboards​** tab. 
 
 ### Data > Databases
 
-Under **Data**, the **Databases**​ tab shows information about the databases you have created or have permission to access. You can create, clone, drop, or transfer ownership of databases, as well as load data in the UI. Notice that a database already exists in your environment. However, we will not be using it in this lab.
+Under **Data**, the **Databases**​ tab shows information about the databases you have created or have permission to access. You can create, clone, drop, or transfer ownership of databases, as well as load data in the UI. Notice that a database already exists in your environment.
 
 ![databases tab](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/3UIStory_6.png?raw=true)
 
@@ -130,22 +117,24 @@ The **Users** sub-tab of the **Users & Roles** tab shows a list of users in the 
 ![users tab](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/3UIStory_13.png?raw=true)
 
 ---
+---
 
+>  **USER MENU**
 Clicking on your username in the bottom right of the UI allows you to change your password, roles, and preferences. Snowflake has several system defined roles. You are currently in the default role of `SNOWPARK_HOL_ROLE` and will stay in this role for the majority of the lab.
 
 ![user preferences dropdown](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/3UIStory_14.png?raw=true)
  
->  **SYSADMIN**
-System Roles like `SYSADMIN` and `ACCOUNTADMIN` have privileges to create warehouses, databases, users and other objects in an account and elevated privileges to manage the account itself.
+>  **System Roles**
+System Roles like `SYSADMIN`, `ACCOUNTADMIN`, `SECURITYADMIN`, `USERADMIN`, `ORGADMIN` exist out of the box in every Snowflake account. They have specific purposes and cannot be dropped. These are typically reserved for Power Users and Snowfalke Admins.
 You can find additional information in the [Snowflake documentation](https://docs.snowflake.net/manuals/user-guide/security-access-control.html).
 
 ## Data Lab: Stock Price & SEC Filings Data
 
-### The Lab Story
+### The Lab Scenario
 You work at a grocery retailer. You want to understand the performance of major consumer goods (CPG) companies in the US that supply your store. This lab takes a look at daily stock price data and quarterly and annual Securities Exchange Commission (SEC) company filings to understand the performance of the CPG landscape. Public companies are required to submit a quarterly and annual report to the SEC detailing their financial data.
 
 We will start by collecting data from three different sources:
-1. Load company metadata `.csv` file.
+1. Load company metadata from a structured `.csv` file.
 2. Load SEC filings from a semi-structured JSON format.
 3. Use the Snowflake Marketplace to find free stock price data from Cybersyn.
 
@@ -166,7 +155,7 @@ Navigate to the **Databases** tab. Click **Create**, name the database `<firstna
 
 ![worksheet creation](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_2.png?raw=true)
 
-Now navigate to the **Worksheets** tab. You should see the worksheet we created in step 3.
+Now navigate to the **Worksheets** tab. You should see the worksheet we created earlier.
 
 ![new worksheet](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_3.png?raw=true)
 
@@ -211,8 +200,7 @@ permid_quote_id variant);
 
 
 >  **Many Options to Run Commands.**
-SQL commands can be executed through the UI, via the **Worksheets** tab, using our SnowSQL command line tool, with a SQL editor of your choice via ODBC/JDBC, or through our other connectors (Python, Spark, etc.).
-As mentioned earlier, to save time, we are performing most of the operations in this lab via pre-written SQL executed in the worksheet as opposed to using the UI.
+SQL commands can be executed via the **Worksheets** tab, using our SnowSQL command line tool, with a SQL editor of your choice, or through our other connectors (Python, Spark, etc.).
 
 Run the query by placing your cursor anywhere in the SQL text and clicking the blue **Play/Run** button in the top right of the worksheet. Or use the keyboard shortcut [Ctrl]/[Cmd]+[Enter].
 
@@ -220,7 +208,7 @@ Verify your `COMPANY_METADATA` table has been created. At the bottom of the work
 
 ![TRIPS confirmation message](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_5.png?raw=true)
 
-Navigate to the **Databases** tab by clicking the **HOME** icon in the upper left corner of the worksheet. Then click **Data** > **Databases**. In the list of databases, click `<firstname>_<lastname>_CYBERSYN` > `PUBLIC` > **TABLES** to see your newly created `COMPANY_METADATA` table. If you don't see any databases on the left, expand your browser because they may be hidden.
+Navigate to the **Databases** tab by clicking the **HOME** icon in the upper left corner of the worksheet. Then click **Data** > **Databases**. In the list of databases, click `<firstname>_<lastname>_CYBERSYN` > `PUBLIC` > **TABLES** to see your newly created `COMPANY_METADATA` table.
 
 ![TRIPS table](https://github.com/Snowflake-Labs/sfquickstarts/blob/master/site/sfguides/src/getting_started_with_snowflake/assets/4PreLoad_6.png?raw=true)
 
