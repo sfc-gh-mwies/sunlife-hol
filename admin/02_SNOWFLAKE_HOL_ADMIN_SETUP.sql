@@ -475,7 +475,7 @@ SELECT * FROM frostbyte_tasty_bytes.harmonized.customer_loyalty_metrics_v;
 
 -- country table load
 INSERT INTO frostbyte_tasty_bytes.raw_pos.country
-SELECT * FROM tb_101.raw_pos.country
+SELECT * FROM tb_101.raw_pos.country;
 
 -- franchise table load
 INSERT INTO frostbyte_tasty_bytes.raw_pos.franchise
@@ -483,27 +483,27 @@ SELECT * FROM tb_101.raw_pos.franchise;
 
 -- location table load
 INSERT INTO frostbyte_tasty_bytes.raw_pos.location
-SELECT * FROM FROM tb_101.raw_pos.location;
+SELECT * FROM tb_101.raw_pos.location;
 
 -- menu table load
 INSERT INTO frostbyte_tasty_bytes.raw_pos.menu
-SELECT * FROM FROM tb_101.raw_pos.menu;
+SELECT * FROM tb_101.raw_pos.menu;
 
 -- truck table load
 INSERT INTO frostbyte_tasty_bytes.raw_pos.truck
-SELECT * FROM FROM tb_101.raw_pos.truck;
+SELECT * FROM tb_101.raw_pos.truck;
 
 -- customer_loyalty table load
 INSERT INTO frostbyte_tasty_bytes.raw_customer.customer_loyalty
-SELECT * FROM FROM tb_101.raw_customer.customer_loyalty;
+SELECT * FROM tb_101.raw_customer.customer_loyalty;
 
 -- order_header table load
 INSERT INTO frostbyte_tasty_bytes.raw_pos.order_header
-SELECT * FROM FROM tb_101.raw_pos.order_header;
+SELECT * FROM tb_101.raw_pos.order_header;
 
 -- order_detail table load
 INSERT INTO frostbyte_tasty_bytes.raw_pos.order_detail
-SELECT * FROM FROM tb_101.raw_pos.order_detail;
+SELECT * FROM tb_101.raw_pos.order_detail;
 
 -- drop demo_build_wh
 DROP WAREHOUSE IF EXISTS demo_build_wh;
@@ -582,10 +582,6 @@ SELECT * FROM frostbyte_tasty_bytes_dev.analytics.shift_sales_v;
 
 CREATE TABLE shift_sales CLONE frostbyte_tasty_bytes_dev.harmonized.shift_sales;
 
--- ** not included in Snowpark 101 quickstart
-
-CREATE TABLE shift_sales CLONE frostbyte_tasty_bytes_dev.harmonized.shift_sales;
-
 -- privilege grants
 USE ROLE securityadmin;
 
@@ -604,6 +600,7 @@ GRANT ALL ON FUTURE FUNCTIONS IN SCHEMA frostbyte_tasty_bytes_dev.analytics TO R
 GRANT USAGE ON FUTURE PROCEDURES IN SCHEMA frostbyte_tasty_bytes_dev.analytics TO ROLE tasty_data_scientist;
 
 -- grant privileges to roles
+USE ROLE ACCOUNTADMIN;
 grant create warehouse on account to role tasty_data_scientist;
 grant create schema on database FROSTBYTE_TASTY_BYTES to role tasty_data_scientist;
 
