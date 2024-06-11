@@ -52,8 +52,8 @@ Commit your changes to the "dev" branch before continuing
 ---------------------------------------------------------
 */
 
-use role accountadmin;
+use role snowpark_hol_role;
 -- Fetch changes from GitHub
-alter git repository quickstart_common.public.quickstart_repo fetch;
+alter git repository quickstart_common_<firstname>_<lastname>.public.quickstart_repo fetch;
 -- Deploy the updated data pipeline
-execute immediate from @quickstart_common.public.quickstart_repo/branches/dev/deploy_pipeline.sql;
+execute immediate from @quickstart_common_<firstname>_<lastname>.public.quickstart_repo/branches/dev/deploy_pipeline.sql;

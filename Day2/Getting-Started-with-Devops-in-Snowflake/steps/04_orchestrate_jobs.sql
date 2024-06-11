@@ -1,5 +1,5 @@
-use role accountadmin;
-use schema quickstart_prod.gold;
+use role snowpark_hol_role;
+use schema quickstart_prod_<firstname>_<lastname>.gold;
 
 
 -- declarative target table of pipeline
@@ -19,7 +19,7 @@ create or alter table vacation_spots (
 -- task to merge pipeline results into target table
 create or alter task vacation_spots_update
   schedule = '1440 minute'
-  warehouse = 'quickstart_wh'
+  warehouse = 'snowpark_hol_vwh'
   AS MERGE INTO vacation_spots USING (
     select *
     from silver.flights_from_home flight
@@ -52,7 +52,7 @@ create or alter task vacation_spots_update
 -- task to select perfect vacation spot and send email with vacation plan
 -- NOTE: NOT ALL CORTEX ML MODELS MAY BE AVAILABLE ON ALL DEPLOYMENTS
 create or alter task email_notification
-  warehouse = 'quickstart_wh'
+  warehouse = 'snowpark_hol_wh'
   after vacation_spots_update
   as 
     begin

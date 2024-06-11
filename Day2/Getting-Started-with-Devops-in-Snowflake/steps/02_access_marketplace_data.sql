@@ -1,4 +1,4 @@
-USE ROLE ACCOUNTADMIN;
+USE ROLE FROSTBYTE_HOL_ROLE;
 
 -- Verify marketplace data sets are accessible
 SELECT * FROM oag_flight_emissions_data_sample.public.estimated_emissions_schedules_sample LIMIT 100;
