@@ -18,15 +18,10 @@
 * **In step 6** replace "demo_db" with "demo_db_\<firstname\>_\<lastname\>"
 
 ### Devops Part 2
-[Getting Started with Devops in Snowflake](https://quickstarts.snowflake.com/guide/getting_started_with_devops_in_snowflake)
+[Getting Started with Devops in Snowflake](Getting-Started-with-Devops-in-Snowflake)
 #### PREREQUISITES
 * VS Code and the [Snowflake Extension](https://marketplace.visualstudio.com/items?itemName=snowflake.snowflake-vsc)
 #### Important Notes About the Quickstart Guide
-* This is also a public Snowflake Quickstart. Again, we'll modify slightly as we go
-* In the Overview, it says you need ACCOUNTADMIN access -- you can use your regular HOL role
 * **SUFFIX ALL DATABASE OBJECTS IN THE CODE REPO WITH YOUR** \<firstname\>_\<lastname\>
-* **In Step 3** While editing the SQL script, replace;
-    * "USE ROLE ACCOUNTADMIN" with "USE ROLE SNOWPARK_HOL_ROLE"
-    * Replace the entire "CREATE WAREHOUSE" statement with "USE WAREHOUSE SNOWPARK_HOL_VWH"
 * **In Step 4** We will import the data sets as a group, using a user with ACCOUNTADMIN access
 * 
