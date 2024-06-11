@@ -2,7 +2,7 @@
 > # Sunlife HOL Day 2 - Cortex + Data Ops
 
 ## Snowpark + Snowflake ML
-* Create a new database with your <firtname>_<lastname> in the title
+* Create a new database with your \<firtname\>_\<lastname\> in the title
 Download [Snowpark-ML.ipynb](https://github.com/sfc-gh-mwies/sunlife-hol/blob/main/Day2/Zero-to-Snowpark/Snowpark-ML.ipynb)
 * In your Snowflake account, navigate to Projects > Notebooks and click the dropdown next to [+] Notebook in the top right corner > "import from .ipynb file"
 * Use the database you just created, and the PUBLIC schema
