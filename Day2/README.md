@@ -18,7 +18,7 @@
 * **In step 6** replace "demo_db" with "demo_db_\<firstname\>_\<lastname\>"
 
 ### Devops Part 2
-[Getting Started with Devops in Snowflake](/Getting-Started-with-Devops-in-Snowflake)
+[Getting Started with Devops in Snowflake](Getting-Started-with-Devops-in-Snowflake)
 #### PREREQUISITES
 * VS Code and the [Snowflake Extension](https://marketplace.visualstudio.com/items?itemName=snowflake.snowflake-vsc)
 #### Important Notes About the Quickstart Guide
