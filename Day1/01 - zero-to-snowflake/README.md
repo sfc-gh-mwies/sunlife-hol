@@ -616,7 +616,7 @@ WITH data_prep AS (
         att.period_end_date,
         att.covered_qtrs,
         TRIM(att.metadata:"ProductOrService"::STRING) AS product
-    FROM Financial__Economic_Essentials.cybersyn.sec_filings_attributes_view att
+    FROM sec_filings_attributes_view att
     JOIN sec_filings_index_view idx
         ON idx.cik = att.cik AND idx.adsh = att.adsh
     WHERE idx.cik = '0001637459'
