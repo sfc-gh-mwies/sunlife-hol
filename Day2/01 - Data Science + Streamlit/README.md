@@ -1,4 +1,5 @@
 ![sunlife-snowflake](https://github.com/sfc-gh-mwies/sunlife-hol/blob/main/img/sunlife-snowflake.png?raw=true)
+> # Sunlife HOL Day 2
 
 ## Cortex Part 1: Snowpark + Snowflake ML
 * Create a new database with your \<firtname\>_\<lastname\> in the title
