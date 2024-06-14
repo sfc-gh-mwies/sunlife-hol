@@ -11,6 +11,6 @@
 ## Cortex Part 2: Basic Cortex Built-in Features Via Streamlit!
 * In your Snowflake account, navigate to Projects > Streamlit and click the [+] Streamlit button
 * Choose an "app title", select the database you just created (you can use the PUBLIC schema) and choose the warehouse SNOWPARK_HOL_VWH
-* Navigate to [SKO_HOP_Cortex_SiS_BUILD_1.py](https://github.com/sfc-gh-mwies/sunlife-hol/blob/main/Day2/Zero-to-Snowpark/SKO_HOP_Cortex_SiS_BUILD_1.py) and copy the code
+* Navigate to [SKO_HOP_Cortex_SiS_BUILD_1.py](https://github.com/sfc-gh-mwies/sunlife-hol/blob/main/Day2/01%20-%20Data%20Science%20%2B%20Streamlit/Zero-to-Snowpark/SKO_HOP_Cortex_SiS_BUILD_1.py) and copy the code
 * "Edit" your streamlit app and paste in the python code
 * Now we should be able to explore the cortex features that come out of the box with Snowflake using a simple Streamlit app interface
