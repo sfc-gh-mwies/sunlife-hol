@@ -12,6 +12,4 @@
 ### [02 - Devops with Snowflake](https://github.com/sfc-gh-mwies/sunlife-hol/tree/main/Day2/02%20-%20Devops%20on%20Snowflake)
 * Devops with Snowflake (30 min presentation) [[slides]](https://github.com/sfc-gh-mwies/sunlife-hol/blob/main/Day2/02%20-%20Devops%20on%20Snowflake/Snowflake%20DevOps.pdf)
 * Hands-on Lab: IaC (Terraform)
-
-
-
+* BONUS: [Devops on Snowflake Walkthrough](https://www.youtube.com/watch?v=k20yLpW8-xU) from Snowflake Principal Architect Jeremiah Hansen
